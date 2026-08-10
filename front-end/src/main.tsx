@@ -4,11 +4,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Header from "./components/Header/index.tsx";
 import Login from "./Login/index.tsx";
+import Register from "./Register/index.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     {/* <Header /> */}
-    <Login />
+    {/* <Login /> */}
+    <Register />
     {/* <App /> */}
   </StrictMode>,
 );
