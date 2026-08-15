@@ -1,18 +1,32 @@
 import { useState } from "react";
-import Input from "../../components/Input";
 import { Link } from "react-router";
+import Input from "../../components/Input";
 import Button from "../../components/Button";
+
+import { insertUser } from "../../services/login";
+import type { UserDTO } from "../../models/users";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState<UserDTO | null>(null);
 
-  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
-  }
 
+    try {
+      const response = await insertUser({
+        email,
+        password,
+      });
+      
+      console.log("DATA:", response.data);
+
+      setUser(response.data);
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+    }
+  };
   return (
     <form
       onSubmit={handleSubmit}
@@ -20,23 +34,29 @@ const Login = () => {
     >
       <div className="flex flex-col items-center justify-center gap-2 bg-[#161410]">
         <Link to="/">
-          <img src="./logo.png" alt="" className="mt-2 mb-4 h-25 w-25" />
+          <img src="./logo.png" alt="Logo" className="mt-2 mb-4 h-25 w-25" />
         </Link>
+
         <Input
           placeholder="E-mail"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+
         <Input
           placeholder="Senha"
           type="password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <p className="text-white">{email}</p>
 
-        <Button title="Login" variant="default" />
+        <Button title="Login" variant="default" type="submit" />
+
         <Link to="/register" className="w-full">
-        <Button title="Não tenho uma conta" variant="outline" />
+          <Button title="Não tenho uma conta" variant="outline" />
         </Link>
+
+        {user && <p className="text-white">Bem-vindo, {user.name}</p>}
       </div>
     </form>
   );

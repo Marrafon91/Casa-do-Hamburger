@@ -1,16 +1,24 @@
 import express from "express";
-import { connection } from "./src/db.js";
-import { prisma } from "./src/db.js";
+import { connection, prisma } from "./src/db.js";
+import cors from "cors";
 
 const app = express();
+
 app.use(express.json());
+app.use(cors());
+
 connection();
 
 app.post("/login", async (req, res) => {
-  const { email, password, cep } = req.body;
+  const { email, password } = req.body;
+
   const user = await prisma.user.findFirst({
-    where: { email, password, cep },
+    where: {
+      email,
+      password,
+    },
   });
+
   res.json(user);
 });
 
