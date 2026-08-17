@@ -26,22 +26,26 @@ const Register = () => {
         </Link>
         <Input
           placeholder="Nome"
+          autoComplete="off"
           type="text"
           onChange={(e) => setName(e.target.value)}
         />
         <Input
           placeholder="Email"
+          autoComplete="username"
           type="email"
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           placeholder="Senha"
+          autoComplete="new-password"
           type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <Input
           placeholder="Confirme sua Senha"
           type="password"
+          autoComplete="off"
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <Input

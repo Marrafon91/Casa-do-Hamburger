@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { connection, prisma } from "./src/db.js";
 import cors from "cors";
 
@@ -9,7 +9,7 @@ app.use(cors());
 
 connection();
 
-app.post("/login", async (req, res) => {
+app.post("/login", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -35,6 +35,35 @@ app.post("/login", async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     res.status(500).json("Erro no servidor. ");
+    return;
+  }
+});
+
+app.post("/register", async (req: Request, res: Response) => {
+  try {
+    const { name, email, password, cep } = req.body;
+
+    if (!name || !email || !password || !cep) {
+      res.status(400).json({ message: "Todas informaçôes são obrigatorias" });
+      return;
+    }
+
+    const user = await prisma.user.findFirst({
+      where: { email },
+    });
+
+    if (user?.email) {
+      res.status(409).json({ message: "E-mail já cadastrado." });
+      return;
+    }
+
+    const newUser = await prisma.user.create({
+      data: { name, email, password, cep },
+    });
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ message: "Erro no servidor" });
     return;
   }
 });
