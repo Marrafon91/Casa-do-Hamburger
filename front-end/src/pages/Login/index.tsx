@@ -18,11 +18,16 @@ const Login = () => {
     setError("");
 
     try {
+      if (!email || !password) {
+        setError("E-mail e senha são obrigatorios");
+        return;
+      }
+
       const response = await insertUser({
         email,
         password,
       });
-      
+
       setUser(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -53,14 +58,17 @@ const Login = () => {
         </Link>
         <div className="mb-3 flex flex-col gap-2">
           <Input
+            type="email"
             placeholder="E-mail"
+            autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <Input
-            placeholder="Senha"
             type="password"
+            placeholder="Senha"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
