@@ -19,12 +19,12 @@ const Login = () => {
         email,
         password,
       });
-      
+
       console.log("DATA:", response.data);
 
       setUser(response.data);
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
+      console.error("Email e senha são Obrigatorios:", error);
     }
   };
   return (
@@ -32,7 +32,7 @@ const Login = () => {
       onSubmit={handleSubmit}
       className="flex h-screen items-center justify-center bg-[#161410]"
     >
-      <div className="flex flex-col items-center justify-center gap-2 bg-[#161410]">
+      <div className="flex flex-col justify-center gap-2 bg-[#161410]">
         <Link to="/">
           <img src="./logo.png" alt="Logo" className="mt-2 mb-4 h-25 w-25" />
         </Link>
@@ -49,6 +49,10 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        <p className="text-left font-bold text-red-500 text-sm">
+          Usuário não encontrado
+        </p>
 
         <Button title="Login" variant="default" type="submit" />
 
