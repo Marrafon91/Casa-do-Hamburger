@@ -5,26 +5,37 @@ import Button from "../../components/Button";
 
 import { insertUser } from "../../services/login";
 import type { UserDTO } from "../../models/users";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<UserDTO | null>(null);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
     try {
       const response = await insertUser({
         email,
         password,
       });
-
-      console.log("DATA:", response.data);
-
+      
       setUser(response.data);
     } catch (error) {
-      console.error("Email e senha são Obrigatorios:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          setError("Usuário não encontrado");
+        } else if (error.response?.status === 400) {
+          setError("Usuário e senha são obrigatórios");
+        } else if (error.response?.status === 401) {
+          setError("Email ou senha inválidos");
+        } else {
+          setError("Erro ao realizar login");
+        }
+      }
     }
   };
   return (
@@ -34,25 +45,28 @@ const Login = () => {
     >
       <div className="flex flex-col justify-center gap-2 bg-[#161410]">
         <Link to="/">
-          <img src="./logo.png" alt="Logo" className="mt-2 mb-4 h-25 w-25" />
+          <img
+            src="./logo.png"
+            alt="Logo"
+            className="mx-auto mt-2 mb-4 h-25 w-25"
+          />
         </Link>
+        <div className="mb-3 flex flex-col gap-2">
+          <Input
+            placeholder="E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <Input
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <Input
+            placeholder="Senha"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-        <Input
-          placeholder="Senha"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <p className="text-left font-bold text-red-500 text-sm">
-          Usuário não encontrado
-        </p>
+        <p className="text-left text-sm font-bold text-red-500">{error}</p>
 
         <Button title="Login" variant="default" type="submit" />
 
