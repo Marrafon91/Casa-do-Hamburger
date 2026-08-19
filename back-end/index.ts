@@ -41,9 +41,9 @@ app.post("/login", async (req: Request, res: Response) => {
 
 app.post("/register", async (req: Request, res: Response) => {
   try {
-    const { name, email, password, cep } = req.body;
+    const { name, email, password, confirmePassword, cep } = req.body;
 
-    if (!name || !email || !password || !cep) {
+    if (!name || !email || !password || !confirmePassword || !cep) {
       res.status(400).json({ message: "Todas informaçôes são obrigatorias" });
       return;
     }

@@ -4,12 +4,15 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 
 import { insertUser } from "../../services/login";
-import type { UserDTO } from "../../models/users";
+import type { LoginDTO, UserDTO } from "../../models/users";
 import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState<LoginDTO>({
+    email: "",
+    password: "",
+  });
+
   const [user, setUser] = useState<UserDTO | null>(null);
   const [error, setError] = useState("");
 
@@ -17,32 +20,47 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    try {
-      if (!email || !password) {
-        setError("E-mail e senha são obrigatorios");
-        return;
-      }
+    if (!formData.email || !formData.password) {
+      setError("E-mail e senha são obrigatórios");
+      return;
+    }
 
-      const response = await insertUser({
-        email,
-        password,
-      });
+    try {
+      const response = await insertUser(formData);
 
       setUser(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        if (error.response?.status === 404) {
-          setError("Usuário não encontrado");
-        } else if (error.response?.status === 400) {
-          setError("Usuário e senha são obrigatórios");
-        } else if (error.response?.status === 401) {
-          setError("Email ou senha inválidos");
-        } else {
-          setError("Erro ao realizar login");
+        switch (error.response?.status) {
+          case 404:
+            setError("Usuário não encontrado");
+            break;
+
+          case 400:
+            setError("Usuário e senha são obrigatórios");
+            break;
+
+          case 401:
+            setError("E-mail ou senha inválidos");
+            break;
+
+          default:
+            setError("Erro ao realizar login");
+            break;
         }
+      } else {
+        setError("Erro inesperado ao realizar login");
       }
     }
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -56,21 +74,24 @@ const Login = () => {
             className="mx-auto mt-2 mb-4 h-25 w-25"
           />
         </Link>
+
         <div className="mb-3 flex flex-col gap-2">
           <Input
+            name="email"
             type="email"
             placeholder="E-mail"
             autoComplete="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
           />
 
           <Input
+            name="password"
             type="password"
             placeholder="Senha"
             autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
 
