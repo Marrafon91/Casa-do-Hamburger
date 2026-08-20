@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { connection, prisma } from "./src/db.js";
 import cors from "cors";
+import bcrypt from "bcrypt";
 
 const app = express();
 
@@ -48,6 +49,10 @@ app.post("/register", async (req: Request, res: Response) => {
       return;
     }
 
+    const hash = await bcrypt.hash(password, 10);
+
+    console.log(hash);
+
     const user = await prisma.user.findFirst({
       where: { email },
     });
@@ -58,7 +63,7 @@ app.post("/register", async (req: Request, res: Response) => {
     }
 
     const newUser = await prisma.user.create({
-      data: { name, email, password, cep },
+      data: { name, email, password: hash, cep },
     });
 
     res.status(201).json(newUser);
