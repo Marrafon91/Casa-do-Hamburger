@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -15,10 +16,10 @@ const Login = () => {
 
   const [user, setUser] = useState<UserDTO | null>(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
 
     if (!formData.email || !formData.password) {
       setError("E-mail e senha são obrigatórios");
@@ -27,6 +28,11 @@ const Login = () => {
 
     try {
       const response = await insertUser(formData);
+
+      if (response.status === 200) {
+        setError("");
+        navigate("/");
+      }
 
       setUser(response.data);
     } catch (error) {

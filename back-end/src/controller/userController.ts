@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../db.js";
-import bcrypt from "bcrypt";
+import bcrypt, { hash } from "bcrypt";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -15,7 +15,6 @@ export const login = async (req: Request, res: Response) => {
     const user = await prisma.user.findFirst({
       where: {
         email,
-        password,
       },
     });
 
@@ -25,10 +24,20 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
+    const passwordIsValid = await bcrypt.compare(password, user.password);
+
+    if (!passwordIsValid) {
+      return res.status(401).json({
+        message: "Senha incorreta.",
+      });
+    }
+   
     return res.status(200).json(user);
   } catch (error) {
-    res.status(500).json("Erro no servidor. ");
-    return;
+    console.error(error);
+    return res.status(500).json({
+      message: "Erro no servidor.",
+    });
   }
 };
 
@@ -41,6 +50,10 @@ export const register = async (req: Request, res: Response) => {
       return;
     }
 
+    if (password !== confirmePassword) {
+      res.status(400).json({ message: "As senhas não são iguais" });
+      return;
+    }
     const hash = await bcrypt.hash(password, 10);
 
     console.log(hash);
