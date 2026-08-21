@@ -15,7 +15,7 @@ const Login = () => {
   });
 
   const [user, setUser] = useState<UserDTO | null>(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -30,7 +30,7 @@ const Login = () => {
       const response = await insertUser(formData);
 
       if (response.status === 200) {
-        setError("");
+        setError(null);
         navigate("/");
       }
 

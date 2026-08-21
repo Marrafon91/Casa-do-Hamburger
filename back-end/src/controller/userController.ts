@@ -24,15 +24,28 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    const passwordIsValid = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.password);
 
-    if (!passwordIsValid) {
+    if (!match) {
       return res.status(401).json({
         message: "Senha incorreta.",
       });
     }
-   
-    return res.status(200).json(user);
+
+    const userInfos = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      cep: user.cep,
+    };
+
+    console.log(userInfos);
+
+    res.cookie("user", userInfos, {
+      maxAge: 30 * 1000,
+    });
+
+    return res.status(200).json(userInfos);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
