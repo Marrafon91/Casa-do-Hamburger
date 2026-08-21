@@ -2,7 +2,7 @@ import { useState } from "react";
 import Input from "../../components/Input";
 import { Link } from "react-router";
 import Button from "../../components/Button";
-import type { RegisterDTO } from "../../models/users";
+import type { RegisterDTO } from "../../types/users";
 import { registerUser } from "../../services/login";
 import axios from "axios";
 

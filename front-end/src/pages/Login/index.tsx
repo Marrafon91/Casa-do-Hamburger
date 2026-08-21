@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
 import { insertUser } from "../../services/login";
-import type { LoginDTO, UserDTO } from "../../models/users";
+import type { LoginDTO } from "../../types/users";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
   const [formData, setFormData] = useState<LoginDTO>({
@@ -14,27 +15,21 @@ const Login = () => {
     password: "",
   });
 
-  const [user, setUser] = useState<UserDTO | null>(null);
+  const { user, setUser } = useContext(UserContext);
+
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
-      setError("E-mail e senha são obrigatórios");
-      return;
-    }
-
     try {
       const response = await insertUser(formData);
 
-      if (response.status === 200) {
-        setError(null);
-        navigate("/");
-      }
-
       setUser(response.data);
+      setError(null);
+
+      navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         switch (error.response?.status) {
