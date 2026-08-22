@@ -32,6 +32,11 @@ const Register = () => {
       return;
     }
 
+    if (formData.password.length < 6) {
+      setError("Senha precisa ter pelo menos 6 caracteres");
+      return;
+    }
+
     if (formData.password !== formData.confirmePassword) {
       setError("As senhas não são iguais");
       return;

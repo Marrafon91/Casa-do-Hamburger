@@ -18,7 +18,7 @@ export interface UserDTO {
   cep: string;
 }
 
-export type UserContextType = {
+export interface UserContextType {
   user: UserDTO | null;
   setUser: React.Dispatch<React.SetStateAction<UserDTO | null>>;
-};
+}
