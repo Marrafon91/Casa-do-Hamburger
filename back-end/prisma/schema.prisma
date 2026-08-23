@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
+model tb_user {
   id String @id @default(uuid())
   name  String 
   email String @unique
@@ -15,7 +15,7 @@ model User {
   cep String
 }
 
-model Product {
+model tb_product {
   id Int @id @default(autoincrement())
   name String?
 }

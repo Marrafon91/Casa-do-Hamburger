@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../db.js";
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
@@ -13,7 +13,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    const user = await prisma.user.findFirst({
+    const user = await prisma.tb_user.findFirst({
       where: {
         email,
       },
@@ -41,7 +41,9 @@ export const login = async (req: Request, res: Response) => {
     };
 
     if (!process.env.JWT_SECRET) {
-      return;
+      return res.status(500).json({
+        message: "JWT_SECRET não configurado.",
+      });
     }
 
     const token = jwt.sign(userInfos, process.env.JWT_SECRET);
@@ -50,11 +52,13 @@ export const login = async (req: Request, res: Response) => {
 
     res.cookie("user", token, {
       maxAge: 18000000,
+      httpOnly: true,
     });
 
     return res.status(200).json(userInfos);
   } catch (error) {
     console.error(error);
+
     return res.status(500).json({
       message: "Erro no servidor.",
     });
@@ -66,35 +70,54 @@ export const register = async (req: Request, res: Response) => {
     const { name, email, password, confirmePassword, cep } = req.body;
 
     if (!name || !email || !password || !confirmePassword || !cep) {
-      res.status(400).json({ message: "Todas informaçôes são obrigatorias" });
-      return;
+      return res.status(400).json({
+        message: "Todas informações são obrigatórias",
+      });
     }
 
     if (password !== confirmePassword) {
-      res.status(400).json({ message: "As senhas não são iguais" });
-      return;
-    }
-    const hash = await bcrypt.hash(password, 10);
-
-    console.log(hash);
-
-    const user = await prisma.user.findFirst({
-      where: { email },
-    });
-
-    if (user?.email) {
-      res.status(409).json({ message: "E-mail já cadastrado." });
-      return;
+      return res.status(400).json({
+        message: "As senhas não são iguais",
+      });
     }
 
-    const newUser = await prisma.user.create({
-      data: { name, email, password: hash, cep },
+    const user = await prisma.tb_user.findFirst({
+      where: {
+        email,
+      },
     });
 
-    res.status(201).json(newUser);
+    if (user) {
+      return res.status(409).json({
+        message: "E-mail já cadastrado.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await prisma.tb_user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        cep,
+      },
+    });
+
+    const userInfos = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      cep: newUser.cep,
+    };
+
+    return res.status(201).json(userInfos);
   } catch (error) {
-    res.status(500).json({ message: "Erro no servidor" });
-    return;
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Erro no servidor",
+    });
   }
 };
 
@@ -102,18 +125,46 @@ export const auth = async (req: Request, res: Response) => {
   try {
     const token = req.cookies.user;
 
+    if (!token) {
+      return res.status(401).json({
+        message: "Usuário não autenticado",
+      });
+    }
+
     if (!process.env.JWT_SECRET) {
-      return;
+      return res.status(500).json({
+        message: "JWT_SECRET não configurado.",
+      });
     }
 
     const decode = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decode) {
-      res.status(401).json({message: "Usuário não autorizado"});
+      return res.status(401).json({
+        message: "Usuário não autorizado",
+      });
     }
 
-    res.status(200).json(decode);
+    return res.status(200).json(decode);
   } catch (error) {
-    return res.status(500).json({ message: "Erro no servidor" });
+    console.error(error);
+
+    return res.status(401).json({
+      message: "Token inválido ou expirado",
+    });
   }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  const { user } = req.cookies;
+
+  if (user) {
+    res.clearCookie("user");
+  }
+
+  console.log(user);
+
+  return res.status(200).json({
+    message: "Logout realizado com sucesso",
+  });
 };

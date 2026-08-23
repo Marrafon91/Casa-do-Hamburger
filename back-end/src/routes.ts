@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { auth, login, register } from "./controller/userController.js";
+import { auth, login, logout, register } from "./controller/userController.js";
 
 export const router = Router();
 
@@ -7,3 +7,4 @@ export const router = Router();
 router.post("/login", login);
 router.post("/register", register);
 router.get("/me", auth);
+router.post("/logout", logout);

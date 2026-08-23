@@ -22,4 +22,5 @@ export interface UserContextType {
   user: UserDTO | null;
   setUser: React.Dispatch<React.SetStateAction<UserDTO | null>>;
   loading: boolean;
+  handleUserLogout: () => Promise<void>;
 }

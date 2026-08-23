@@ -14,3 +14,9 @@ export function userMe() {
     withCredentials: true,
   });
 }
+
+export function userLogout() {
+  return api.post<UserDTO>("/logout", {
+    withCredentials: true,
+  });
+}
