@@ -8,3 +8,9 @@ export function insertUser(body: LoginDTO) {
 export function registerUser(body: RegisterDTO) {
   return api.post<UserDTO>("/register", body);
 }
+
+export function userMe() {
+  return api.get<UserDTO>("/me", {
+    withCredentials: true,
+  });
+}

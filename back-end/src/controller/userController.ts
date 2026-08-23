@@ -49,7 +49,7 @@ export const login = async (req: Request, res: Response) => {
     console.log(token);
 
     res.cookie("user", token, {
-      maxAge: 30 * 1000,
+      maxAge: 18000000,
     });
 
     return res.status(200).json(userInfos);
@@ -95,5 +95,25 @@ export const register = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor" });
     return;
+  }
+};
+
+export const auth = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.user;
+
+    if (!process.env.JWT_SECRET) {
+      return;
+    }
+
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decode) {
+      res.status(401).json({message: "Usuário não autorizado"});
+    }
+
+    res.status(200).json(decode);
+  } catch (error) {
+    return res.status(500).json({ message: "Erro no servidor" });
   }
 };

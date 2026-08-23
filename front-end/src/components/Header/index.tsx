@@ -1,13 +1,29 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../../context/UserContext";
 import { Box, LayoutDashboard, LogOut, Plus, ShoppingCart } from "lucide-react";
+import { userMe } from "../../services/login";
 
 const Header = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const location = useLocation();
 
   console.log(location.pathname);
+
+  const handleAuthUser = async () => {
+    try {
+      const { data } = await userMe();
+
+      setUser(data);
+    } catch (error) {
+      console.error(error);
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    handleAuthUser();
+  }, []);
 
   const getNavItemClass = (path: string) => {
     const baseClass =
