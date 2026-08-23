@@ -123,29 +123,8 @@ export const register = async (req: Request, res: Response) => {
 
 export const auth = async (req: Request, res: Response) => {
   try {
-    const token = req.cookies.user;
-
-    if (!token) {
-      return res.status(401).json({
-        message: "Usuário não autenticado",
-      });
-    }
-
-    if (!process.env.JWT_SECRET) {
-      return res.status(500).json({
-        message: "JWT_SECRET não configurado.",
-      });
-    }
-
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (!decode) {
-      return res.status(401).json({
-        message: "Usuário não autorizado",
-      });
-    }
-
-    return res.status(200).json(decode);
+    const { user } = req;
+    return res.status(200).json(user);
   } catch (error) {
     console.error(error);
 
