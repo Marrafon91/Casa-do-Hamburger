@@ -14,7 +14,7 @@ export const authMiddleware = (
   }
 
   try {
-    const decoded = jwt.verify(user, process.env.JWT_SECRET);    
+    const decoded = jwt.verify(user, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {

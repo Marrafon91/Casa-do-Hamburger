@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { use, useContext } from "react";
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../../context/UserContext";
 import { Box, LayoutDashboard, LogOut, Plus, ShoppingCart } from "lucide-react";
@@ -29,21 +29,23 @@ const Header = () => {
 
         {user ? (
           <div className="flex items-center gap-8 text-white">
-            <div className="flex items-center gap-2 text-[#F2DAAC]">
-              <Link to="/">
-                <div className={getNavItemClass("/")}>
-                  <Box size={18} />
+            {user.admin && (
+              <div className="flex items-center gap-2 text-[#F2DAAC]">
+                <Link to="/">
+                  <div className={getNavItemClass("/")}>
+                    <Box size={18} />
+                  </div>
+                </Link>
+                <Link to="/pedidos">
+                  <div className={getNavItemClass("/pedidos")}>
+                    <LayoutDashboard size={18} />
+                  </div>
+                </Link>
+                <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
+                  <Plus size={18} />
                 </div>
-              </Link>
-              <Link to="/pedidos">
-                <div className={getNavItemClass("/pedidos")}>
-                  <LayoutDashboard size={18} />
-                </div>
-              </Link>
-              <div className="flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border">
-                <Plus size={18} />
               </div>
-            </div>
+            )}
             <div className="relative cursor-pointer">
               <ShoppingCart size={18} />
               <p className="absolute -top-4 -right-4 flex h-5 w-5 items-center justify-center rounded-full bg-[#F2DAAC] text-[#161410]">

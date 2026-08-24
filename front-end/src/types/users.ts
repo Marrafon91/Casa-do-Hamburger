@@ -16,6 +16,7 @@ export interface UserDTO {
   name: string;
   email: string;
   cep: string;
+  admin: boolean;
 }
 
 export interface UserContextType {
