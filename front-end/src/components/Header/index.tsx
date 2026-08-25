@@ -34,7 +34,7 @@ const Header = () => {
         {user ? (
           <div className="flex items-center gap-8 text-white">
             {user.admin && (
-              <div className="flex items-center gap-2 text-[#F2DAAC]">
+              <div className="hidden md:flex items-center gap-2 text-[#F2DAAC]">
                 <Link to="/">
                   <div className={getNavItemClass("/")}>
                     <Box size={18} />
