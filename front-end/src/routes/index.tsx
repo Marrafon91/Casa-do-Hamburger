@@ -1,31 +1,47 @@
 import { createBrowserRouter } from "react-router";
-import Login from "../pages/Login/index";
-import Register from "../pages/Register/index";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Pedidos from "../pages/Pedidos";
 import Layout from "../pages/Layout";
+import PublicRoutes from "../pages/PublicRoutes";
+import PrivateRoutes from "../pages/PrivateRoutes";
 
 export const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: <PrivateRoutes />,
     children: [
       {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/pedidos",
-        element: <Pedidos />,
+        element: <Layout />,
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+          {
+            path: "/pedidos",
+            element: <Pedidos />,
+          },
+        ],
       },
     ],
   },
 
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <PublicRoutes>
+        <Login />
+      </PublicRoutes>
+    ),
   },
+
   {
-    path: "/Register",
-    element: <Register />,
+    path: "/register",
+    element: (
+      <PublicRoutes>
+        <Register />
+      </PublicRoutes>
+    ),
   },
 ]);
