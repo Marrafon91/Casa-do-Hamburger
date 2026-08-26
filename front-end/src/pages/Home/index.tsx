@@ -43,8 +43,8 @@ const Home = () => {
           Porções
         </div>
       </div>
-      <p className="mb-2 font-bold text-[#F2DAAC] uppercase">{category}</p>
-      <div className="flex flex-col gap-1 md:gap-3">
+      <p className="mb-2 font-bold text-[#F2DAAC] mt-2 uppercase">{category}</p>
+      <div className="flex flex-col gap-1 md:gap-2">
         <Product />
         <Product />
         <Product />
