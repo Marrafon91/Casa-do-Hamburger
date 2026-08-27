@@ -1,5 +1,5 @@
-import { CalendarFold, Clock1, User } from "lucide-react";
 import { useState } from "react";
+import CardPedidos from "../../components/CardPedidos";
 
 const Pedidos = () => {
   const [category, setCategory] = useState("Pendente");
@@ -47,122 +47,14 @@ const Pedidos = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        <div>
-          <div className="rounded-md bg-[#F2DAAC] p-2 text-[#32343E]">
-            <div className="flex justify-between">
-              <p>#1</p>
-              <select name="" id="" className="font-bold">
-                <option value="" defaultChecked disabled>
-                  Pendente
-                </option>
-                <option value="">Retirado</option>
-                <option value="">Cancelado</option>
-              </select>
-            </div>
-            <div className="mt-2 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <User size={16} />
-                <p className="text-xs">Guilherme Marrafon</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <CalendarFold size={16} />
-                <p className="text-xs">28/08/2026</p>
-              </div>
-              <div className="flex justify-between">
-                <div className="flex items-center gap-2">
-                  <Clock1 size={16} />
-                  <p className="text-xs">14:55</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock1 size={16} />
-                  <p className="text-xs">16:32</p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-1 h-0.5 w-full bg-[#32343E]"></div>
-            <div className="text-right text-lg font-bold">
-              <p>R$ 147,69</p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div className="rounded-md bg-[#F2DAAC] p-2 text-[#32343E]">
-            <div className="flex justify-between">
-              <p>#1</p>
-              <select name="" id="" className="font-bold">
-                <option value="" defaultChecked disabled>
-                  Pendente
-                </option>
-                <option value="">Retirado</option>
-                <option value="">Cancelado</option>
-              </select>
-            </div>
-            <div className="mt-2 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <User size={16} />
-                <p className="text-xs">Guilherme Marrafon</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <CalendarFold size={16} />
-                <p className="text-xs">28/08/2026</p>
-              </div>
-              <div className="flex justify-between">
-                <div className="flex items-center gap-2">
-                  <Clock1 size={16} />
-                  <p className="text-xs">14:55</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock1 size={16} />
-                  <p className="text-xs">16:32</p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-1 h-0.5 w-full bg-[#32343E]"></div>
-            <div className="text-right text-lg font-bold">
-              <p>R$ 147,69</p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div className="rounded-md bg-[#F2DAAC] p-2 text-[#32343E]">
-            <div className="flex justify-between">
-              <p>#1</p>
-              <select name="" id="" className="font-bold">
-                <option value="" defaultChecked disabled>
-                  Pendente
-                </option>
-                <option value="">Retirado</option>
-                <option value="">Cancelado</option>
-              </select>
-            </div>
-            <div className="mt-2 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <User size={16} />
-                <p className="text-xs">Guilherme Marrafon</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <CalendarFold size={16} />
-                <p className="text-xs">28/08/2026</p>
-              </div>
-              <div className="flex justify-between">
-                <div className="flex items-center gap-2">
-                  <Clock1 size={16} />
-                  <p className="text-xs">14:55</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock1 size={16} />
-                  <p className="text-xs">16:32</p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-1 h-0.5 w-full bg-[#32343E]"></div>
-            <div className="text-right text-lg font-bold">
-              <p>R$ 147,69</p>
-            </div>
-          </div>
-        </div>
+        <CardPedidos
+          id={2}
+          name="Guilherme Marrafon"
+          date="28/08/2026"
+          orderTime="14:55"
+          deliveredTime="16:32"
+          total={147.69}
+        />
       </div>
     </div>
   );
