@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Product from "../../components/Product/Product";
+import { allProducts } from "../../services/productService";
+import type { ProductDTO } from "../../types/products";
 
 const Home = () => {
   const [category, setCategory] = useState("Hambúrger");
+  const [product, setProduct] = useState<ProductDTO[]>([]);
 
   const handleChangeCategory = (newCategory: string) => {
     setCategory(newCategory);
@@ -20,6 +23,22 @@ const Home = () => {
       return elementoNaoSelecionado;
     }
   };
+
+  const getProducts = async () => {
+    try {
+      const response = await allProducts();
+
+      setProduct(response.data.products);
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   return (
     <div className="mx-auto w-full px-3 text-white md:w-184.25 md:px-0">
@@ -43,11 +62,18 @@ const Home = () => {
           Porções
         </div>
       </div>
-      <p className="mb-2 font-bold text-[#F2DAAC] mt-2 uppercase">{category}</p>
+      <p className="mt-2 mb-2 font-bold text-[#F2DAAC] uppercase">{category}</p>
       <div className="flex flex-col gap-1 md:gap-2">
-        <Product />
-        <Product />
-        <Product />
+        {product.map((product) => (
+          <Product
+            key={product.id}
+            id={product.id}
+            description={product.description}
+            imgUrl={product.imgUrl}
+            name={product.name}
+            price={product.price}
+          />
+        ))}
       </div>
     </div>
   );
