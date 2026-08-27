@@ -4,6 +4,7 @@ export type ProductDTO = {
   description: string;
   price: number;
   imgUrl: string;
+  category: string;
 };
 
 export interface ProductResponse {

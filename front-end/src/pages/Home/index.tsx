@@ -71,6 +71,7 @@ const Home = () => {
             description={product.description}
             imgUrl={product.imgUrl}
             name={product.name}
+            category={product.category}
             price={product.price}
           />
         ))}

@@ -21,6 +21,7 @@ model tb_product {
   name String
   description String
   price Int
+  category String
   imgUrl String
   createdAt DateTime @default(now())
 }
