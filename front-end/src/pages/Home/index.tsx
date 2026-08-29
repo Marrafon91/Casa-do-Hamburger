@@ -4,7 +4,7 @@ import { allProducts } from "../../services/productService";
 import type { ProductDTO } from "../../types/products";
 
 const Home = () => {
-  const [category, setCategory] = useState("Hambúrger");
+  const [category, setCategory] = useState("Hamburger");
   const [product, setProduct] = useState<ProductDTO[]>([]);
 
   const handleChangeCategory = (newCategory: string) => {
@@ -36,6 +36,10 @@ const Home = () => {
     }
   };
 
+  const filteredProducts = product.filter((product) => {
+    return product.category === category;
+  });
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -44,8 +48,8 @@ const Home = () => {
     <div className="mx-auto w-full px-3 text-white md:w-184.25 md:px-0">
       <div className="my-1 flex gap-2 md:my-3">
         <div
-          className={getCategoryClass("Hambúrger")}
-          onClick={() => handleChangeCategory("Hambúrger")}
+          className={getCategoryClass("Hamburger")}
+          onClick={() => handleChangeCategory("Hamburger")}
         >
           Hambúrger
         </div>
@@ -64,7 +68,7 @@ const Home = () => {
       </div>
       <p className="mt-2 mb-2 font-bold text-[#F2DAAC] uppercase">{category}</p>
       <div className="flex flex-col gap-1 md:gap-2">
-        {product.map((product) => (
+        {filteredProducts.map((product) => (
           <Product
             key={product.id}
             id={product.id}
@@ -75,6 +79,9 @@ const Home = () => {
             price={product.price}
           />
         ))}
+        {filteredProducts.length === 0 && (
+          <p>Não há produtos desta categoria</p>
+        )}
       </div>
     </div>
   );
