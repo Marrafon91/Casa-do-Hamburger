@@ -2,7 +2,7 @@ import { ShoppingCart } from "lucide-react";
 import type { ProductDTO } from "../../types/products";
 import { formatterPrice } from "../../utils/formatterPrice";
 import { UserContext } from "../../context/UserContext";
-import { use, useContext } from "react";
+import { useContext } from "react";
 
 const Product = ({
   id,
