@@ -10,6 +10,7 @@ const Home = () => {
   const handleChangeCategory = (newCategory: string) => {
     setCategory(newCategory);
   };
+
   const getCategoryClass = (categoryName: string) => {
     const elementoSeleciona =
       "md:text-md flex h-7 w-24 cursor-pointer items-center justify-center rounded-md border border-[#F2DAAC] bg-[#F2DAAC] text-sm font-bold text-[#161410] md:h-9 md:w-32";
@@ -41,6 +42,7 @@ const Home = () => {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getProducts();
   }, []);
 
