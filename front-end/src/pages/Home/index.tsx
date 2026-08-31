@@ -5,7 +5,7 @@ import type { ProductDTO } from "../../types/products";
 
 const Home = () => {
   const [category, setCategory] = useState("Hamburger");
-  const [product, setProduct] = useState<ProductDTO[]>([]);
+  const [products, setProducts] = useState<ProductDTO[]>([]);
 
   const handleChangeCategory = (newCategory: string) => {
     setCategory(newCategory);
@@ -29,7 +29,7 @@ const Home = () => {
     try {
       const response = await allProducts();
 
-      setProduct(response.data.products);
+      setProducts(response.data.products);
 
       console.log(response.data);
     } catch (error) {
@@ -37,7 +37,9 @@ const Home = () => {
     }
   };
 
-  const filteredProducts = product.filter((product) => {
+
+
+  const filteredProducts = products.filter((product) => {
     return product.category === category;
   });
 
@@ -79,6 +81,7 @@ const Home = () => {
             name={product.name}
             category={product.category}
             price={product.price}
+            setProducts={setProducts}
           />
         ))}
         {filteredProducts.length === 0 && (

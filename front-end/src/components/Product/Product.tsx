@@ -3,6 +3,7 @@ import type { ProductDTO } from "../../types/products";
 import { formatterPrice } from "../../utils/formatterPrice";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
+import { deleteProduct } from "../../services/productService";
 
 const Product = ({
   id,
@@ -11,10 +12,23 @@ const Product = ({
   price,
   imgUrl,
   category,
+  setProducts,
 }: ProductDTO) => {
   const { user } = useContext(UserContext);
 
-  console.log(user);
+  const handleDeleteProduct = async (id: string) => {
+    try {
+      if (!id) {
+        console.log("ID não enviado");
+        return;
+      }
+      await deleteProduct(id);
+
+      setProducts((prev) => prev.filter((product) => product.id !== id));
+    } catch (error) {
+      console.error("Erro ao deletar produto:", error);
+    }
+  };
 
   return (
     <div>
@@ -26,7 +40,7 @@ const Product = ({
             {user?.admin && (
               <div
                 className="cursor-pointer rounded-md border px-2 text-xs text-red-500 uppercase"
-                onClick={() => alert(id)}
+                onClick={() => handleDeleteProduct(id)}
               >
                 Deletar
               </div>
