@@ -20,6 +20,14 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
+    const { user } = req;
+
+    if (!user?.admin) {
+      return res.status(401).json({
+        message: "Usuário não autorizado",
+      });
+    }
+
     const { id } = req.params;
 
     if (typeof id !== "string" || !id) {

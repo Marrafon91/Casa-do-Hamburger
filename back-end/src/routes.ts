@@ -14,4 +14,4 @@ router.post("/logout", authMiddleware, logout);
 
 // Rotas de Produtos.
 router.get("/products", getProducts);
-router.delete("/products/:id", deleteProduct);
+router.delete("/products/:id", authMiddleware , deleteProduct);
