@@ -14,6 +14,8 @@ model tb_user {
   password String
   cep String
   admin Boolean @default(false)
+
+  cartItems tb_cart_items[]
 }
 
 model tb_product {
@@ -24,4 +26,17 @@ model tb_product {
   category String
   imgUrl String
   createdAt DateTime @default(now())
+
+  cartItems tb_cart_items[]
+}
+
+model tb_cart_items {
+  id String @id @default(ulid())
+
+  productId String 
+  product tb_product @relation(fields: [productId], references: [id])
+
+  userId String 
+  user tb_user @relation(fields: [userId], references: [id])
+
 }
