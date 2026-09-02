@@ -32,6 +32,7 @@ model tb_product {
 
 model tb_cart_items {
   id String @id @default(uuid())
+  quantity Int @default(1)
 
   productId String 
   product tb_product @relation(fields: [productId], references: [id])
