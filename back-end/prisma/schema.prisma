@@ -31,12 +31,11 @@ model tb_product {
 }
 
 model tb_cart_items {
-  id String @id @default(ulid())
+  id String @id @default(uuid())
 
   productId String 
   product tb_product @relation(fields: [productId], references: [id])
 
   userId String 
   user tb_user @relation(fields: [userId], references: [id])
-
 }
