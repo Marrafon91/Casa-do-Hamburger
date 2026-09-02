@@ -9,8 +9,6 @@ const Header = () => {
   const { user, handleUserLogout } = useContext(UserContext);
   const location = useLocation();
 
-  console.log(location.pathname);
-
   const getNavItemClass = (path: string) => {
     const baseClass =
       "flex h-8.75 w-8.75 cursor-pointer items-center justify-center rounded-md border";

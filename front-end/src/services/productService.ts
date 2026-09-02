@@ -9,3 +9,9 @@ export function allProducts() {
 export function deleteProduct(id: string): Promise<AxiosResponse<void>> {
   return api.delete<void>(`/products/${id}`);
 }
+
+export function cartItems() {
+  return api.get("/cartItems", {
+    withCredentials: true,
+  });
+}
