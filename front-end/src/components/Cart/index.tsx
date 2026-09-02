@@ -1,9 +1,9 @@
 import { X } from "lucide-react";
 import Button from "../Button";
 import CartItem from "../CartItem";
-import { useEffect, useState } from "react";
-import { cartItems } from "../../services/productService";
-import type { CartItemDTO } from "../../types/cartItems";
+import { useContext, useEffect } from "react";
+import { CartItemContext } from "../../context/CartItemsContext";
+import { itemsCart } from "../../services/productService";
 
 type CartTypeProps = {
   showCart: boolean;
@@ -11,24 +11,23 @@ type CartTypeProps = {
 };
 
 const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
-  const [itemsCart, setItemsCart] = useState<CartItemDTO[]>([]);
+  const { cartItems, setCartItems } = useContext(CartItemContext);
 
   const getCartItems = async () => {
     try {
-      const response = await cartItems();
+      const response = await itemsCart();
 
       const data = response.data;
-      console.log("DATA" + data);
 
-      setItemsCart(data);
+      setCartItems(data);
     } catch (error) {
       console.log("ERROR:", error);
     }
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     getCartItems();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -39,7 +38,7 @@ const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
       </div>
 
       <div className="mt-10 flex flex-1 flex-col gap-2">
-        {itemsCart.map((item) => (
+        {cartItems.map((item) => (
           <CartItem
             title={item.product.name}
             price={item.product.price}

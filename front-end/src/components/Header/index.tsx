@@ -1,12 +1,14 @@
+import { Box, LayoutDashboard, LogOut, Plus, ShoppingCart } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../../context/UserContext";
-import { Box, LayoutDashboard, LogOut, Plus, ShoppingCart } from "lucide-react";
 import Cart from "../Cart";
+import { CartItemContext } from "../../context/CartItemsContext";
 
 const Header = () => {
   const [showCart, setShowCart] = useState<boolean>(false);
   const { user, handleUserLogout } = useContext(UserContext);
+  const { cartItems } = useContext(CartItemContext);
   const location = useLocation();
 
   const getNavItemClass = (path: string) => {
@@ -27,10 +29,6 @@ const Header = () => {
       <div className="mx-auto flex w-full items-center justify-between p-3 md:w-184.25 md:p-0">
         <Link to="/">
           <img src="./logo.png" alt="" />
-        </Link>
-
-        <Link to="/login" className="text-white">
-          Login
         </Link>
 
         {user ? (
@@ -55,7 +53,7 @@ const Header = () => {
             <div className="relative cursor-pointer">
               <ShoppingCart size={18} onClick={() => setShowCart(!showCart)} />
               <p className="absolute -top-4 -right-4 flex h-5 w-5 items-center justify-center rounded-full bg-[#F2DAAC] text-[#161410]">
-                1
+                {cartItems.length}
               </p>
             </div>
             <div className="flex items-center gap-2">

@@ -6,3 +6,8 @@ export type CartItemDTO = {
   productId: string;
   product: ProductDTO;
 };
+
+export type CartItemContextDTO = {
+  cartItems: CartItemDTO[];
+  setCartItems: React.Dispatch<React.SetStateAction<CartItemDTO[]>>;
+};
