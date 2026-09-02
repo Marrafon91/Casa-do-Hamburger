@@ -5,10 +5,12 @@ export type ProductDTO = {
   price: number;
   imgUrl: string;
   category: string;
-  setProducts?: React.Dispatch<React.SetStateAction<ProductDTO[]>>
+};
+
+export type ProductTypeDTO = ProductDTO & {
+  setProducts: React.Dispatch<React.SetStateAction<ProductDTO[]>>;
 };
 
 export interface ProductResponse {
   products: ProductDTO[];
 }
-
