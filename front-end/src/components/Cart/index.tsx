@@ -17,7 +17,7 @@ const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
     try {
       const response = await itemsCart();
 
-      const data = response.data;
+      const data = await response.data;
 
       setCartItems(data);
     } catch (error) {
@@ -27,7 +27,7 @@ const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
 
   useEffect(() => {
     getCartItems();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -40,8 +40,10 @@ const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
       <div className="mt-10 flex flex-1 flex-col gap-2">
         {cartItems.map((item) => (
           <CartItem
+            key={item.id}
             title={item.product.name}
             price={item.product.price}
+            quantity={item.quantity}
             img={item.product.imgUrl}
             id={item.product.id}
           />

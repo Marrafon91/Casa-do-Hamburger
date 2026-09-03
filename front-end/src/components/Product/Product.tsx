@@ -3,7 +3,7 @@ import type { ProductTypeDTO } from "../../types/products";
 import { formatterPrice } from "../../utils/formatterPrice";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
-import { deleteProduct } from "../../services/productService";
+import { createCartItem, deleteProduct } from "../../services/productService";
 
 const Product = ({
   id,
@@ -30,6 +30,18 @@ const Product = ({
     }
   };
 
+  const newCartItem = async () => {
+    try {
+      const response = await createCartItem({
+        productId: id,
+      });
+      const data = await response.data;
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="flex gap-2.5">
@@ -51,7 +63,11 @@ const Product = ({
           </p>
           <div className="flex items-center justify-end gap-2">
             <p className="text-sm text-[#F2DAAC]">{formatterPrice(price)}</p>
-            <ShoppingCart size={18} className="cursor-pointer" />
+            <ShoppingCart
+              size={18}
+              className="cursor-pointer"
+              onClick={() => newCartItem()}
+            />
           </div>
         </div>
       </div>
