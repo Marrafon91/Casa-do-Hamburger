@@ -23,8 +23,12 @@ export function createCartItem(body: createCartItemDTO) {
   });
 }
 
-export function creatOrder() {
-  return api.post("/create-order",  {}, {
-    withCredentials: true,
-  });
+export function createOrder() {
+  return api.post(
+    "/create-order",
+    {},
+    {
+      withCredentials: true,
+    },
+  );
 }

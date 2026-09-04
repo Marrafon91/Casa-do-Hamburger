@@ -1,9 +1,9 @@
 import { X } from "lucide-react";
 import Button from "../Button";
 import CartItem from "../CartItem";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartItemContext } from "../../context/CartItemsContext";
-import { creatOrder } from "../../services/productService";
+import { createOrder } from "../../services/productService";
 
 type CartTypeProps = {
   showCart: boolean;
@@ -13,24 +13,25 @@ type CartTypeProps = {
 const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
   const { cartItems, setCartItems } = useContext(CartItemContext);
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleCreateOrder = async () => {
+    setError(null);
+
+    if (cartItems.length === 0) {
+      setError("Seu carrinho está vazio.");
+      return;
+    }
+
     try {
-      const respose = await creatOrder();
-
-      if (cartItems.length === 0) {
-        return console.log("Carrinho Vazio");
-      }
-
-      if (respose.status !== 201) {
-        return console.log("Erro ao finalizar o pedido");
-      }
+      await createOrder();
 
       setCartItems([]);
       setShowCart(false);
 
-      console.log("Pedido realizado com Sucesso");
     } catch (error) {
-      console.error("Erro no pedido", error);
+      setError("Erro ao finalizar o pedido.");
+      console.error(error);
     }
   };
 
@@ -54,6 +55,12 @@ const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
           />
         ))}
       </div>
+
+      {error && (
+        <p className="mb-3 text-center text-lg font-bold text-red-500">
+          {error}
+        </p>
+      )}
 
       <Button title="Finalizar pedido" onClick={handleCreateOrder} />
     </div>
