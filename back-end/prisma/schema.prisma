@@ -16,6 +16,7 @@ model tb_user {
   admin Boolean @default(false)
 
   cartItems tb_cart_items[]
+  order tb_order[]
 }
 
 model tb_product {
@@ -28,6 +29,7 @@ model tb_product {
   createdAt DateTime @default(now())
 
   cartItems tb_cart_items[]
+  orderItems tb_order_items[]
 }
 
 model tb_cart_items {
@@ -39,4 +41,28 @@ model tb_cart_items {
 
   userId String 
   user tb_user @relation(fields: [userId], references: [id])
+}
+
+model tb_order {
+  id String @id @default(uuid())
+  status String @default("Pendente")
+  total Int
+  createdAt DateTime @default(now())
+
+  userId String
+  user tb_user @relation(fields: [userId], references: [id])
+
+  items tb_order_items[]
+}
+
+model tb_order_items {
+  id String @id @default(uuid())
+  quantity Int
+  price Int
+
+  productId String
+  product tb_product @relation(fields: [productId], references: [id])
+
+  oderId String
+  order tb_order @relation(fields: [oderId], references: [id])
 }
