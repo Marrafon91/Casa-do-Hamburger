@@ -29,15 +29,15 @@ const Home = () => {
     try {
       const response = await allProducts();
 
-      setProducts(response.data.products);
+      if (response.status !== 200) {
+        return setProducts([]);
+      }
 
-      console.log(response.data);
+      setProducts(response.data.products);
     } catch (error) {
-      console.log(error);
+      console.error("Erro ao buscar os produtos:", error);
     }
   };
-
-
 
   const filteredProducts = products.filter((product) => {
     return product.category === category;
