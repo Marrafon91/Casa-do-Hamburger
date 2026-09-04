@@ -4,6 +4,7 @@ import { formatterPrice } from "../../utils/formatterPrice";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
 import { createCartItem, deleteProduct } from "../../services/productService";
+import { CartItemContext } from "../../context/CartItemsContext";
 
 const Product = ({
   id,
@@ -15,6 +16,7 @@ const Product = ({
   setProducts,
 }: ProductTypeDTO) => {
   const { user } = useContext(UserContext);
+  const { getCartItems } = useContext(CartItemContext);
 
   const handleDeleteProduct = async (id: string) => {
     try {
@@ -32,13 +34,13 @@ const Product = ({
 
   const newCartItem = async () => {
     try {
-      const response = await createCartItem({
+      await createCartItem({
         productId: id,
       });
-      const data = await response.data;
-      console.log(data);
+
+      await getCartItems();
     } catch (error) {
-      console.log(error);
+      console.error("Erro ao adicionar produto ao carrinho:", error);
     }
   };
 

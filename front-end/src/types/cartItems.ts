@@ -11,6 +11,7 @@ export type CartItemDTO = {
 export type CartItemContextDTO = {
   cartItems: CartItemDTO[];
   setCartItems: React.Dispatch<React.SetStateAction<CartItemDTO[]>>;
+  getCartItems: () => Promise<void>;
 };
 
 export type createCartItemDTO = {

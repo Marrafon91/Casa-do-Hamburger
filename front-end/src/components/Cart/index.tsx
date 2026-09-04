@@ -1,9 +1,8 @@
 import { X } from "lucide-react";
 import Button from "../Button";
 import CartItem from "../CartItem";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { CartItemContext } from "../../context/CartItemsContext";
-import { itemsCart } from "../../services/productService";
 
 type CartTypeProps = {
   showCart: boolean;
@@ -11,29 +10,13 @@ type CartTypeProps = {
 };
 
 const Cart = ({ showCart, setShowCart }: CartTypeProps) => {
-  const { cartItems, setCartItems } = useContext(CartItemContext);
-
-  const getCartItems = async () => {
-    try {
-      const response = await itemsCart();
-
-      const data = await response.data;
-
-      setCartItems(data);
-    } catch (error) {
-      console.log("ERROR:", error);
-    }
-  };
-
-  useEffect(() => {
-    getCartItems();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { cartItems } = useContext(CartItemContext);
 
   return (
     <div className="absolute right-0 z-10 flex h-screen w-93.75 flex-col bg-[#F2DAAC] p-5">
       <div className="flex items-center justify-between">
         <X className="cursor-pointer" onClick={() => setShowCart(!showCart)} />
+
         <p className="font-bold uppercase">Meu carrinho</p>
       </div>
 
